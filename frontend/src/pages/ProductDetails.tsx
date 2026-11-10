@@ -22,9 +22,9 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 const valueOrPending = (value: string | number | null | undefined) => value ?? 'Nao informado';
 
 const Field = ({ label, value }: { label: string; value: string | number | null | undefined }) => (
-  <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-    <p className="text-xs font-medium uppercase tracking-normal text-zinc-500 dark:text-zinc-400">{label}</p>
-    <p className="mt-2 break-words text-sm font-medium text-zinc-950 dark:text-white">{valueOrPending(value)}</p>
+  <div className="rounded-[18px] bg-chip p-4 shadow-[inset_0_0_0_1px_var(--line)]">
+    <p className="text-xs font-medium uppercase tracking-normal text-muted">{label}</p>
+    <p className="mt-2 break-words text-sm font-medium text-ink">{valueOrPending(value)}</p>
   </div>
 );
 
@@ -32,7 +32,8 @@ export const ProductDetails = () => {
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
 
-  if (isLoading || !product) return <PageHeader title="Produto" description="Carregando cadastro." />;
+  if (isLoading || !product)
+    return <PageHeader title="Produto" description="Carregando cadastro." />;
 
   const dimensions = product.dimensionsCm;
   const dimensionsText =
@@ -48,7 +49,7 @@ export const ProductDetails = () => {
         actions={
           <Link
             to="/products"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-900 transition hover:border-brand-200 hover:bg-brand-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-[14px] border border-line bg-[var(--glass-a)] px-4 text-sm font-medium text-ink transition hover:bg-chip "
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Voltar
@@ -59,11 +60,15 @@ export const ProductDetails = () => {
       <div className="grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
         <Card>
           <CardContent>
-            <div className="flex aspect-square items-center justify-center rounded-lg bg-zinc-50 p-6 dark:bg-zinc-950">
+            <div className="flex aspect-square items-center justify-center rounded-[14px] bg-chip p-6">
               {product.imageUrl ? (
-                <img src={product.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain" />
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="max-h-full max-w-full object-contain"
+                />
               ) : (
-                <div className="flex flex-col items-center gap-3 text-zinc-400">
+                <div className="flex flex-col items-center gap-3 text-faint">
                   <ImageOff className="h-10 w-10" aria-hidden="true" />
                   <span className="text-sm">Imagem nao encontrada no Tiny</span>
                 </div>
@@ -74,12 +79,10 @@ export const ProductDetails = () => {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Card>
-            <CardHeader title="Estoque" action={<Boxes className="h-5 w-5 text-emerald-600" />} />
+            <CardHeader title="Estoque" action={<Boxes className="h-5 w-5 text-pos" />} />
             <CardContent>
-              <p className="text-3xl font-semibold text-zinc-950 dark:text-white">
-                {valueOrPending(product.stock)}
-              </p>
-              <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="text-3xl font-semibold text-ink">{valueOrPending(product.stock)}</p>
+              <p className="mt-2 text-sm text-muted">
                 Reservado {valueOrPending(product.reservedStock)} • Min {product.minimumStock}
                 {product.maximumStock !== null ? ` • Max ${product.maximumStock}` : ''}
               </p>
@@ -87,23 +90,27 @@ export const ProductDetails = () => {
           </Card>
 
           <Card>
-            <CardHeader title="Preço" action={<Tag className="h-5 w-5 text-brand-600" />} />
+            <CardHeader title="Preço" action={<Tag className="h-5 w-5 text-accent" />} />
             <CardContent className="space-y-2">
-              <p className="text-3xl font-semibold text-zinc-950 dark:text-white">
-                {formatCurrency(product.price)}
-              </p>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="text-3xl font-semibold text-ink">{formatCurrency(product.price)}</p>
+              <p className="text-sm text-muted">
                 Promo{' '}
-                {product.promotionalPrice !== null ? formatCurrency(product.promotionalPrice) : 'Nao informado'}
+                {product.promotionalPrice !== null
+                  ? formatCurrency(product.promotionalPrice)
+                  : 'Nao informado'}
               </p>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                Custo {product.costPrice !== null ? formatCurrency(product.costPrice) : 'Nao informado'}
+              <p className="text-sm text-muted">
+                Custo{' '}
+                {product.costPrice !== null ? formatCurrency(product.costPrice) : 'Nao informado'}
               </p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader title="Identificação" action={<Barcode className="h-5 w-5 text-brand-600" />} />
+            <CardHeader
+              title="Identificação"
+              action={<Barcode className="h-5 w-5 text-accent" />}
+            />
             <CardContent className="grid gap-3">
               <Field label="SKU" value={product.sku} />
               <Field label="EAN" value={product.ean} />
@@ -112,11 +119,17 @@ export const ProductDetails = () => {
           </Card>
 
           <Card>
-            <CardHeader title="Logística" action={<Ruler className="h-5 w-5 text-brand-600" />} />
+            <CardHeader title="Logística" action={<Ruler className="h-5 w-5 text-accent" />} />
             <CardContent className="grid gap-3">
               <Field label="Dimensões" value={dimensionsText} />
-              <Field label="Peso líquido" value={product.weightKg ? `${product.weightKg} kg` : null} />
-              <Field label="Peso bruto" value={product.grossWeightKg ? `${product.grossWeightKg} kg` : null} />
+              <Field
+                label="Peso líquido"
+                value={product.weightKg ? `${product.weightKg} kg` : null}
+              />
+              <Field
+                label="Peso bruto"
+                value={product.grossWeightKg ? `${product.grossWeightKg} kg` : null}
+              />
             </CardContent>
           </Card>
         </div>
@@ -124,7 +137,10 @@ export const ProductDetails = () => {
 
       <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
         <Card>
-          <CardHeader title="Cadastro no Tiny" action={<PackageCheck className="h-5 w-5 text-brand-600" />} />
+          <CardHeader
+            title="Cadastro no Tiny"
+            action={<PackageCheck className="h-5 w-5 text-accent" />}
+          />
           <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             <Field label="Categoria" value={product.category} />
             <Field label="Marca" value={product.brand} />
@@ -136,7 +152,7 @@ export const ProductDetails = () => {
         </Card>
 
         <Card>
-          <CardHeader title="Links e mídia" action={<LinkIcon className="h-5 w-5 text-brand-600" />} />
+          <CardHeader title="Links e mídia" action={<LinkIcon className="h-5 w-5 text-accent" />} />
           <CardContent className="space-y-3">
             {product.slug ? <Field label="Slug" value={product.slug} /> : null}
             {product.videoUrl ? <Field label="Vídeo" value={product.videoUrl} /> : null}
@@ -152,19 +168,22 @@ export const ProductDetails = () => {
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <CardHeader title="Descrição" action={<Scale className="h-5 w-5 text-brand-600" />} />
+          <CardHeader title="Descrição" action={<Scale className="h-5 w-5 text-accent" />} />
           <CardContent>
-            <p className="whitespace-pre-wrap text-sm leading-6 text-zinc-700 dark:text-zinc-300">
+            <p className="whitespace-pre-wrap text-sm leading-6 text-ink/80">
               {product.description ?? 'Nao informado'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader title="Informações internas" action={<ClipboardEdit className="h-5 w-5 text-brand-600" />} />
+          <CardHeader
+            title="Informações internas"
+            action={<ClipboardEdit className="h-5 w-5 text-accent" />}
+          />
           <CardContent>
             <textarea
-              className="min-h-32 w-full rounded-lg border border-zinc-200 bg-white p-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:ring-brand-950"
+              className="field min-h-32 w-full rounded-control p-3.5 text-sm text-ink outline-none transition placeholder:text-faint focus:border-accent/60 focus:ring-4 focus:ring-accent/15"
               placeholder="Observações internas do time"
             />
             <Button className="mt-3">Salvar</Button>

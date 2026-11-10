@@ -5,12 +5,12 @@ import { cn } from '@/lib/utils';
 type BadgeTone = 'neutral' | 'green' | 'amber' | 'red' | 'purple' | 'blue';
 
 const tones: Record<BadgeTone, string> = {
-  neutral: 'bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200',
-  green: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
-  amber: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-  red: 'bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300',
-  purple: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-200',
-  blue: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  neutral: 'bg-chip text-muted shadow-[inset_0_0_0_1px_var(--line)]',
+  green: 'bg-pos/15 text-pos shadow-[inset_0_0_0_1px_rgb(var(--pos)/.3)]',
+  amber: 'bg-warn/15 text-warn shadow-[inset_0_0_0_1px_rgb(var(--warn)/.3)]',
+  red: 'bg-neg/15 text-neg shadow-[inset_0_0_0_1px_rgb(var(--neg)/.3)]',
+  purple: 'bg-accent/15 text-accent shadow-[inset_0_0_0_1px_rgb(var(--accent)/.3)]',
+  blue: 'bg-info/15 text-info shadow-[inset_0_0_0_1px_rgb(var(--info)/.3)]',
 };
 
 export const Badge = ({
@@ -20,7 +20,7 @@ export const Badge = ({
 }: HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone }) => (
   <span
     className={cn(
-      'inline-flex max-w-full items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium',
+      'inline-flex max-w-full items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-bold tabular-nums',
       tones[tone],
       className,
     )}

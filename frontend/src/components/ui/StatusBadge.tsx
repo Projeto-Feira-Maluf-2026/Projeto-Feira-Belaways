@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/Badge';
 import type { AlertPriority, OrderStatus } from '@/types/domain';
 
-const orderLabels: Record<OrderStatus, string> = {
+export const orderLabels: Record<OrderStatus, string> = {
   new: 'Novo',
   awaiting_payment: 'Pagamento',
   paid: 'Pago',
@@ -33,7 +33,13 @@ export const PriorityBadge = ({ priority }: { priority: AlertPriority }) => {
     critical: 'Crítica',
   };
   const tone =
-    priority === 'critical' ? 'red' : priority === 'high' ? 'amber' : priority === 'medium' ? 'purple' : 'green';
+    priority === 'critical'
+      ? 'red'
+      : priority === 'high'
+        ? 'amber'
+        : priority === 'medium'
+          ? 'purple'
+          : 'green';
 
   return <Badge tone={tone}>{labels[priority]}</Badge>;
 };

@@ -3,13 +3,7 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 export const Card = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'rounded-lg border border-zinc-200 bg-white shadow-soft dark:border-zinc-800 dark:bg-zinc-900',
-      className,
-    )}
-    {...props}
-  />
+  <div className={cn('glass min-w-0 animate-rise', className)} {...props} />
 );
 
 export const CardHeader = ({
@@ -21,15 +15,15 @@ export const CardHeader = ({
   description?: string;
   action?: ReactNode;
 }) => (
-  <div className="flex flex-col gap-3 border-b border-zinc-100 p-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800">
+  <div className="flex flex-col gap-3 px-5 pb-1 pt-5 sm:flex-row sm:items-center sm:justify-between md:px-6 md:pt-6">
     <div>
-      <h2 className="text-base font-semibold text-zinc-950 dark:text-white">{title}</h2>
-      {description ? <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{description}</p> : null}
+      <h2 className="text-base font-bold tracking-tight text-ink">{title}</h2>
+      {description ? <p className="mt-0.5 text-[13px] text-muted">{description}</p> : null}
     </div>
     {action}
   </div>
 );
 
 export const CardContent = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('p-5', className)} {...props} />
+  <div className={cn('p-5 md:p-6', className)} {...props} />
 );

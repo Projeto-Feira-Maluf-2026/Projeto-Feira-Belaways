@@ -34,27 +34,43 @@ export const OrderDetails = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={`Pedido #${order.number}`} description={`${order.customerName} • ${formatDate(order.createdAt)}`} actions={<Link to="/orders" className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-900 transition hover:border-brand-200 hover:bg-brand-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Voltar</Link>} />
+      <PageHeader
+        title={`Pedido #${order.number}`}
+        description={`${order.customerName} • ${formatDate(order.createdAt)}`}
+        actions={
+          <Link
+            to="/orders"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-[14px] border border-line bg-[var(--glass-a)] px-4 text-sm font-medium text-ink transition hover:bg-chip "
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Voltar
+          </Link>
+        }
+      />
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader title="Situação" />
           <CardContent>
             <OrderStatusBadge status={order.status} />
-            <p className="mt-4 text-2xl font-semibold text-zinc-950 dark:text-white">{formatCurrency(order.total)}</p>
+            <p className="mt-4 font-display text-[28px] font-extrabold leading-none tracking-[-0.04em] text-ink tabular-nums">
+              {formatCurrency(order.total)}
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader title="Envio" action={<Truck className="h-5 w-5 text-brand-600" />} />
+          <CardHeader title="Envio" action={<Truck className="h-5 w-5 text-accent" />} />
           <CardContent>
-            <p className="font-medium text-zinc-950 dark:text-white">{order.shippingMethod}</p>
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Prazo: {formatDate(order.promisedAt)}</p>
+            <p className="font-medium text-ink">{order.shippingMethod}</p>
+            <p className="mt-1 text-sm text-muted">Prazo: {formatDate(order.promisedAt)}</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader title="Itens" action={<Package className="h-5 w-5 text-brand-600" />} />
+          <CardHeader title="Itens" action={<Package className="h-5 w-5 text-accent" />} />
           <CardContent>
-            <p className="text-2xl font-semibold text-zinc-950 dark:text-white">{order.items.length}</p>
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Produtos no pedido</p>
+            <p className="font-display text-[28px] font-extrabold leading-none tracking-[-0.04em] text-ink tabular-nums">
+              {order.items.length}
+            </p>
+            <p className="mt-1 text-sm text-muted">Produtos no pedido</p>
           </CardContent>
         </Card>
       </div>

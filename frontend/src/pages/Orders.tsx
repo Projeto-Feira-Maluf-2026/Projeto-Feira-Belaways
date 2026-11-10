@@ -20,8 +20,8 @@ export const Orders = () => {
       header: 'Pedido',
       cell: (order) => (
         <div>
-          <p className="font-medium text-zinc-950 dark:text-white">#{order.number}</p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">{formatDate(order.createdAt)}</p>
+          <p className="font-medium text-ink">#{order.number}</p>
+          <p className="text-xs text-muted">{formatDate(order.createdAt)}</p>
         </div>
       ),
     },
@@ -33,7 +33,11 @@ export const Orders = () => {
     {
       header: '',
       cell: (order) => (
-        <Link to={`/orders/${order.id}`} className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white" aria-label="Ver pedido">
+        <Link
+          to={`/orders/${order.id}`}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-[14px] text-muted transition hover:bg-chip hover:text-ink"
+          aria-label="Ver pedido"
+        >
           <Eye className="h-4 w-4" aria-hidden="true" />
         </Link>
       ),
@@ -42,10 +46,26 @@ export const Orders = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Pedidos" description="Acompanhamento de status, clientes, valores, envio e prazos." actions={<Button variant="secondary" onClick={() => downloadUrl('/api/orders?format=csv')}><Download className="h-4 w-4" aria-hidden="true" />CSV</Button>} />
+      <PageHeader
+        title="Pedidos"
+        description="Acompanhamento de status, clientes, valores, envio e prazos."
+        actions={
+          <Button variant="secondary" onClick={() => downloadUrl('/api/orders?format=csv')}>
+            <Download className="h-4 w-4" aria-hidden="true" />
+            CSV
+          </Button>
+        }
+      />
       <div className="relative max-w-xl">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
-        <Input value={search} onChange={(event) => setSearchParams(event.target.value ? { search: event.target.value } : {})} placeholder="Pesquisar por pedido ou cliente" className="pl-9" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
+        <Input
+          value={search}
+          onChange={(event) =>
+            setSearchParams(event.target.value ? { search: event.target.value } : {})
+          }
+          placeholder="Pesquisar por pedido ou cliente"
+          className="pl-9"
+        />
       </div>
       <DataTable rows={isLoading ? [] : data} columns={columns} />
     </div>

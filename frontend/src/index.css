@@ -2,35 +2,194 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Tokens ───────────────────────────────────────────────────
+   Belaways no vidro líquido: lavanda clara de dia, ameixa profunda à noite.
+   Valores em "r g b" para aceitar opacidade do Tailwind (ex.: bg-ink/10). */
 :root {
+  --bg: 250 245 247;
+  --bg-2: 253 226 240;
+  --ink: 33 16 27;
+  --muted: 104 82 96;
+  --faint: 150 128 142;
+  --line: rgb(70 20 50 / 0.1);
+  --chip: rgb(70 20 50 / 0.05);
+  --pos: 6 135 82;
+  --neg: 206 44 72;
+  --warn: 176 110 0;
+  --info: 12 120 180;
+  --accent: 200 30 134;
+  --pink: #e0399f;
+  --pink-hi: #fe5cc1;
+  --glass-a: rgb(255 255 255 / 0.78);
+  --glass-b: rgb(255 255 255 / 0.5);
+  --rim: rgb(255 255 255 / 0.95);
+  --rim-2: rgb(254 92 193 / 0.16);
+  --field: rgb(255 255 255 / 0.7);
+  --shadow: 0 24px 50px -28px rgb(90 20 60 / 0.35);
+  --blob-1: #ffc3e3;
+  --blob-2: #ffdccb;
+  --blob-3: #fbd0ea;
   color-scheme: light;
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #fafafa;
 }
 
 :root.dark {
+  --bg: 15 11 14;
+  --bg-2: 48 18 38;
+  --ink: 250 240 246;
+  --muted: 200 180 192;
+  --faint: 140 120 132;
+  --line: rgb(255 255 255 / 0.08);
+  --chip: rgb(255 255 255 / 0.06);
+  --pos: 110 231 170;
+  --neg: 255 120 140;
+  --warn: 252 200 100;
+  --info: 120 205 255;
+  --accent: 255 120 200;
+  --pink: #e0399f;
+  --pink-hi: #fe5cc1;
+  --glass-a: rgb(255 255 255 / 0.08);
+  --glass-b: rgb(255 255 255 / 0.03);
+  --rim: rgb(255 255 255 / 0.22);
+  --rim-2: rgb(254 92 193 / 0.12);
+  --field: rgb(255 255 255 / 0.04);
+  --shadow: 0 24px 60px -24px rgb(0 0 0 / 0.8);
+  --blob-1: #6b1648;
+  --blob-2: #4a1a14;
+  --blob-3: #5a1240;
   color-scheme: dark;
-  background: #09090b;
 }
 
-* {
-  box-sizing: border-box;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    background: rgb(var(--bg));
+  }
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: rgb(var(--bg));
+    color: rgb(var(--ink));
+    font-family: theme('fontFamily.sans');
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition:
+      background 0.5s,
+      color 0.5s;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.025em;
+  }
+  td,
+  time {
+    font-variant-numeric: tabular-nums;
+  }
+  ::selection {
+    background: rgb(var(--accent) / 0.3);
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 12px;
+  }
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+@layer components {
+  /* Vidro líquido: gradiente translúcido, blur, aro de luz e sombra macia. */
+  .glass {
+    --mx: 30%;
+    --my: -20%;
+    position: relative;
+    isolation: isolate;
+    border-radius: 26px;
+    background: linear-gradient(145deg, var(--glass-a) 0%, var(--glass-b) 48%, var(--glass-a) 140%);
+    backdrop-filter: blur(26px) saturate(190%);
+    -webkit-backdrop-filter: blur(26px) saturate(190%);
+    box-shadow:
+      inset 0 1px 0 var(--rim),
+      inset 0 -1px 0 rgb(255 255 255 / 0.06),
+      var(--shadow),
+      0 2px 6px rgb(0 0 0 / 0.08);
+  }
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      160deg,
+      var(--rim),
+      rgb(255 255 255 / 0.03) 36%,
+      var(--rim-2) 70%,
+      rgb(255 255 255 / 0.3)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        420px circle at var(--mx) var(--my),
+        rgb(255 255 255 / 0.14),
+        transparent 45%
+      ),
+      radial-gradient(120% 60% at 20% -10%, rgb(255 255 255 / 0.12), transparent 55%);
+  }
+
+  .btn-primary {
+    color: #fff;
+    background: var(--pink);
+    box-shadow:
+      0 10px 24px -12px rgb(224 57 159 / 0.7),
+      inset 0 1px 0 rgb(255 255 255 / 0.35);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #c92a8b;
+  }
+
+  .field {
+    background: var(--field);
+    border: 1px solid var(--line);
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+
+  .eyebrow {
+    display: inline-block;
+    color: rgb(var(--accent));
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-::selection {
-  background: rgba(142, 68, 173, 0.22);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -54,8 +54,13 @@ export const Users = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: Parameters<typeof endpoints.updateUser>[1] }) =>
-      endpoints.updateUser(id, payload),
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: Parameters<typeof endpoints.updateUser>[1];
+    }) => endpoints.updateUser(id, payload),
     onSuccess: async () => {
       setEditForm((current) => ({ ...current, password: '' }));
       await queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -98,20 +103,27 @@ export const Users = () => {
       header: 'Usuario',
       cell: (user) => (
         <div>
-          <p className="font-medium text-zinc-950 dark:text-white">{user.fullName}</p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">{user.email}</p>
+          <p className="font-medium text-ink">{user.fullName}</p>
+          <p className="text-xs text-muted">{user.email}</p>
         </div>
       ),
     },
     { header: 'Permissao', cell: (user) => <Badge tone="purple">{roleLabels[user.role]}</Badge> },
     {
       header: 'Status',
-      cell: (user) => <Badge tone={user.status === 'active' ? 'green' : 'red'}>{user.status}</Badge>,
+      cell: (user) => (
+        <Badge tone={user.status === 'active' ? 'green' : 'red'}>{user.status}</Badge>
+      ),
     },
     {
       header: '',
       cell: (user) => (
-        <Button variant="secondary" size="sm" disabled={user.role === 'owner'} onClick={() => selectUser(user)}>
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled={user.role === 'owner'}
+          onClick={() => selectUser(user)}
+        >
           <ShieldCheck className="h-4 w-4" aria-hidden="true" />
           Editar
         </Button>
@@ -134,41 +146,53 @@ export const Users = () => {
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <CardHeader title="Adicionar pessoa" action={<UserPlus className="h-5 w-5 text-brand-600" />} />
+          <CardHeader
+            title="Adicionar pessoa"
+            action={<UserPlus className="h-5 w-5 text-accent" />}
+          />
           <CardContent>
             <form onSubmit={handleCreate} className="grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Nome</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Nome</span>
                 <Input
                   required
                   value={createForm.fullName}
-                  onChange={(event) => setCreateForm((current) => ({ ...current, fullName: event.target.value }))}
+                  onChange={(event) =>
+                    setCreateForm((current) => ({ ...current, fullName: event.target.value }))
+                  }
                 />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">E-mail</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">E-mail</span>
                 <Input
                   required
                   type="email"
                   value={createForm.email}
-                  onChange={(event) => setCreateForm((current) => ({ ...current, email: event.target.value }))}
+                  onChange={(event) =>
+                    setCreateForm((current) => ({ ...current, email: event.target.value }))
+                  }
                 />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Senha</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Senha</span>
                 <Input
                   required
                   type="password"
                   value={createForm.password}
-                  onChange={(event) => setCreateForm((current) => ({ ...current, password: event.target.value }))}
+                  onChange={(event) =>
+                    setCreateForm((current) => ({ ...current, password: event.target.value }))
+                  }
                 />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Permissao</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Permissao</span>
                 <Select
                   value={createForm.role}
                   onChange={(event) =>
-                    setCreateForm((current) => ({ ...current, role: event.target.value as ManagedRole }))
+                    setCreateForm((current) => ({
+                      ...current,
+                      role: event.target.value as ManagedRole,
+                    }))
                   }
                 >
                   {managedRoles.map((role) => (
@@ -189,11 +213,14 @@ export const Users = () => {
         </Card>
 
         <Card>
-          <CardHeader title="Alterar acesso" action={<KeyRound className="h-5 w-5 text-brand-600" />} />
+          <CardHeader
+            title="Alterar acesso"
+            action={<KeyRound className="h-5 w-5 text-accent" />}
+          />
           <CardContent>
             <form onSubmit={handleUpdate} className="grid gap-4 sm:grid-cols-2">
               <label className="block sm:col-span-2">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Usuario</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Usuario</span>
                 <Select
                   value={selectedId}
                   onChange={(event) => {
@@ -213,37 +240,46 @@ export const Users = () => {
                 </Select>
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Nome</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Nome</span>
                 <Input
                   value={editForm.fullName}
-                  onChange={(event) => setEditForm((current) => ({ ...current, fullName: event.target.value }))}
+                  onChange={(event) =>
+                    setEditForm((current) => ({ ...current, fullName: event.target.value }))
+                  }
                   disabled={!selectedId}
                 />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">E-mail</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">E-mail</span>
                 <Input
                   type="email"
                   value={editForm.email}
-                  onChange={(event) => setEditForm((current) => ({ ...current, email: event.target.value }))}
+                  onChange={(event) =>
+                    setEditForm((current) => ({ ...current, email: event.target.value }))
+                  }
                   disabled={!selectedId}
                 />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Nova senha</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Nova senha</span>
                 <Input
                   type="password"
                   value={editForm.password}
-                  onChange={(event) => setEditForm((current) => ({ ...current, password: event.target.value }))}
+                  onChange={(event) =>
+                    setEditForm((current) => ({ ...current, password: event.target.value }))
+                  }
                   disabled={!selectedId}
                 />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Permissao</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Permissao</span>
                 <Select
                   value={editForm.role}
                   onChange={(event) =>
-                    setEditForm((current) => ({ ...current, role: event.target.value as ManagedRole }))
+                    setEditForm((current) => ({
+                      ...current,
+                      role: event.target.value as ManagedRole,
+                    }))
                   }
                   disabled={!selectedId}
                 >
@@ -255,7 +291,7 @@ export const Users = () => {
                 </Select>
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-200">Status</span>
+                <span className="mb-1.5 block text-sm font-medium text-ink/80">Status</span>
                 <Select
                   value={editForm.status}
                   onChange={(event) =>

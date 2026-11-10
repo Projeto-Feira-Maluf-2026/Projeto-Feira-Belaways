@@ -35,9 +35,9 @@ const statusBadge = (status: string | null) => {
 };
 
 const smallInfo = (label: string, value: string | number | null | undefined) => (
-  <span className="inline-flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+  <span className="inline-flex items-center gap-1 text-xs text-muted">
     <span>{label}</span>
-    <span className="font-medium text-zinc-700 dark:text-zinc-200">{value ?? 'Nao informado'}</span>
+    <span className="font-medium text-ink/80">{value ?? 'Nao informado'}</span>
   </span>
 );
 
@@ -49,7 +49,8 @@ export const Products = () => {
   const withImages = data.filter((product) => product.imageUrl).length;
   const withStock = data.filter((product) => product.stock !== null).length;
   const lowStock = data.filter(
-    (product) => product.stock !== null && product.stock > 0 && product.stock <= product.minimumStock,
+    (product) =>
+      product.stock !== null && product.stock > 0 && product.stock <= product.minimumStock,
   ).length;
   const outOfStock = data.filter((product) => product.stock !== null && product.stock <= 0).length;
   const stats: Array<{ label: string; value: string; icon: LucideIcon }> = [
@@ -68,16 +69,16 @@ export const Products = () => {
             <img
               src={product.imageUrl}
               alt=""
-              className="h-16 w-16 rounded-lg border border-zinc-200 bg-white object-contain p-1 dark:border-zinc-800 dark:bg-zinc-950"
+              className="h-16 w-16 rounded-[14px] bg-[var(--glass-a)] object-contain p-1 shadow-[inset_0_0_0_1px_var(--line)]"
               loading="lazy"
             />
           ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg border border-dashed border-zinc-300 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-900">
+            <div className="flex h-16 w-16 items-center justify-center rounded-[14px] border border-dashed border-line bg-chip text-faint">
               <ImageOff className="h-5 w-5" aria-hidden="true" />
             </div>
           )}
           <div className="min-w-0 space-y-1">
-            <p className="line-clamp-2 font-medium leading-5 text-zinc-950 dark:text-white">{product.name}</p>
+            <p className="line-clamp-2 font-medium leading-5 text-ink">{product.name}</p>
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {smallInfo('SKU', product.sku)}
               {product.ean ? smallInfo('EAN', product.ean) : null}
@@ -93,10 +94,8 @@ export const Products = () => {
         <div className="space-y-2">
           {statusBadge(product.status)}
           <div className="space-y-1">
-            <p className="text-sm font-medium text-zinc-800 dark:text-zinc-100">
-              {product.category || 'Sem categoria'}
-            </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm font-medium text-ink">{product.category || 'Sem categoria'}</p>
+            <p className="text-xs text-muted">
               Unidade {product.unit ?? 'n/i'} {product.location ? `• ${product.location}` : ''}
             </p>
           </div>
@@ -108,12 +107,13 @@ export const Products = () => {
       cell: (product) => (
         <div className="space-y-2">
           {stockBadge(product)}
-          <div className="text-sm text-zinc-700 dark:text-zinc-200">
+          <div className="text-sm text-ink/80">
             <span className="font-semibold">{product.stock ?? 'n/i'}</span>
-            <span className="text-zinc-500 dark:text-zinc-400"> disponível</span>
+            <span className="text-muted"> disponível</span>
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Min {product.minimumStock} {product.maximumStock !== null ? `• Max ${product.maximumStock}` : ''}
+          <p className="text-xs text-muted">
+            Min {product.minimumStock}{' '}
+            {product.maximumStock !== null ? `• Max ${product.maximumStock}` : ''}
           </p>
         </div>
       ),
@@ -122,14 +122,12 @@ export const Products = () => {
       header: 'Preço',
       cell: (product) => (
         <div className="space-y-1">
-          <p className="font-semibold text-zinc-950 dark:text-white">{formatCurrency(product.price)}</p>
+          <p className="font-semibold text-ink">{formatCurrency(product.price)}</p>
           {product.promotionalPrice !== null ? (
-            <p className="text-xs text-emerald-700 dark:text-emerald-300">
-              Promo {formatCurrency(product.promotionalPrice)}
-            </p>
+            <p className="text-xs text-pos">Promo {formatCurrency(product.promotionalPrice)}</p>
           ) : null}
           {product.costPrice !== null ? (
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">Custo {formatCurrency(product.costPrice)}</p>
+            <p className="text-xs text-muted">Custo {formatCurrency(product.costPrice)}</p>
           ) : null}
         </div>
       ),
@@ -159,7 +157,7 @@ export const Products = () => {
       cell: (product) => (
         <Link
           to={`/products/${product.id}`}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-[14px] text-muted transition hover:bg-chip hover:text-ink"
           aria-label="Ver produto"
         >
           <Eye className="h-4 w-4" aria-hidden="true" />
@@ -183,20 +181,26 @@ export const Products = () => {
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map(({ label, value, icon: Icon }) => (
-          <div key={label} className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-            <Icon className="h-5 w-5 text-brand-600" aria-hidden="true" />
-            <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">{label}</p>
-            <p className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-white">{value}</p>
+          <div key={label} className="glass p-5">
+            <div className="grid h-10 w-10 place-items-center rounded-[14px] bg-accent/12 text-accent">
+              <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+            </div>
+            <p className="mt-3 text-sm text-muted">{label}</p>
+            <p className="mt-1 font-display text-[30px] font-extrabold leading-none tracking-[-0.04em] text-ink tabular-nums">
+              {value}
+            </p>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 md:flex-row">
+      <div className="flex flex-col gap-3 glass p-5 md:flex-row">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
           <Input
             value={search}
-            onChange={(event) => setSearchParams(event.target.value ? { search: event.target.value } : {})}
+            onChange={(event) =>
+              setSearchParams(event.target.value ? { search: event.target.value } : {})
+            }
             placeholder="Pesquisar por nome, SKU ou EAN"
             className="pl-9"
           />
@@ -208,7 +212,11 @@ export const Products = () => {
         </Select>
       </div>
 
-      <DataTable rows={isLoading ? [] : data} columns={columns} empty="Nenhum produto localizado." />
+      <DataTable
+        rows={isLoading ? [] : data}
+        columns={columns}
+        empty="Nenhum produto localizado."
+      />
     </div>
   );
 };
