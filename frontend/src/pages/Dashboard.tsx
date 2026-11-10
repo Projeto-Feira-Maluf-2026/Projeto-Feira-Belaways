@@ -56,23 +56,23 @@ export const Dashboard = () => {
   const metrics = data.metrics;
   const dark = theme === 'dark';
   const chart = {
-    accent: dark ? '#c48cff' : '#9333ea',
-    grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(60,30,90,0.09)',
-    axis: dark ? '#968cac' : '#8c7ca0',
-    bar: dark ? ['#f0abfc', '#7e22ce'] : ['#e879f9', '#9333ea'],
+    accent: dark ? '#ff78c8' : '#e0399f',
+    grid: dark ? 'rgba(255,255,255,0.07)' : 'rgba(70,20,50,0.08)',
+    axis: dark ? '#8c7884' : '#96808e',
+    bar: dark ? ['#ff78c8', '#ff78c8'] : ['#e0399f', '#e0399f'],
   };
   const tooltipProps = {
-    cursor: { fill: dark ? 'rgba(255,255,255,0.05)' : 'rgba(147,51,234,0.06)' },
+    cursor: { fill: dark ? 'rgba(255,255,255,0.05)' : 'rgba(224,57,159,0.06)' },
     contentStyle: {
       borderRadius: 16,
       border: 'none',
-      background: dark ? 'rgba(28,14,44,0.92)' : 'rgba(255,255,255,0.92)',
+      background: dark ? 'rgba(30,20,27,0.94)' : 'rgba(255,255,255,0.94)',
       backdropFilter: 'blur(16px)',
-      boxShadow: '0 18px 40px -18px rgba(40,10,70,0.55)',
-      color: dark ? '#f8f1ff' : '#1c0c2e',
+      boxShadow: '0 18px 40px -18px rgba(60,10,40,0.5)',
+      color: dark ? '#faf0f6' : '#21101b',
       fontWeight: 600,
     },
-    labelStyle: { color: dark ? '#cebee2' : '#5c4a70' },
+    labelStyle: { color: dark ? '#c8b4c0' : '#685260' },
   };
 
   return (

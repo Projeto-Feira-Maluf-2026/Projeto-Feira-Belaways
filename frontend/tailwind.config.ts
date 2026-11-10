@@ -22,20 +22,7 @@ export default {
         warn: token('warn'),
         info: token('info'),
         accent: token('accent'),
-        brand: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7e22ce',
-          800: '#6b21a8',
-          900: '#581c87',
-          950: '#3b0764',
-        },
-        orchid: '#f472d0',
+        pink: { DEFAULT: '#e0399f', hi: '#fe5cc1' },
       },
       borderRadius: {
         glass: '26px',
@@ -44,7 +31,7 @@ export default {
       },
       boxShadow: {
         soft: 'var(--shadow)',
-        glow: '0 12px 30px -8px rgb(168 85 247 / 0.65)',
+        glow: '0 10px 24px -12px rgb(224 57 159 / 0.7)',
       },
       fontFamily: {
         sans: ['"Hanken Grotesk"', '-apple-system', 'system-ui', 'sans-serif'],

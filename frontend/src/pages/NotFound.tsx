@@ -7,9 +7,7 @@ export const NotFound = () => (
   <main className="relative flex min-h-screen items-center justify-center px-6 text-ink">
     <Ambient />
     <div className="glass relative z-10 max-w-md animate-rise rounded-glass-xl px-8 py-10 text-center">
-      <p className="bg-gradient-to-br from-[#c084fc] to-[#7e22ce] bg-clip-text font-display text-7xl font-extrabold tracking-[-0.05em] text-transparent">
-        404
-      </p>
+      <p className="font-display text-7xl font-extrabold tracking-[-0.05em] text-accent">404</p>
       <h1 className="mt-3 font-display text-3xl font-extrabold tracking-[-0.03em]">
         Página não encontrada
       </h1>

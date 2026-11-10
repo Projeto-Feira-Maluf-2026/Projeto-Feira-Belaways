@@ -15,8 +15,7 @@ const variants: Record<ButtonVariant, string> = {
   secondary:
     'bg-[var(--glass-a)] text-ink shadow-[inset_0_1px_0_var(--rim),inset_0_0_0_1px_var(--line),0_8px_20px_-12px_rgb(0_0_0/.35)] backdrop-blur-xl hover:bg-[var(--glass-b)] hover:text-accent',
   ghost: 'text-muted hover:bg-chip hover:text-ink',
-  danger:
-    'bg-gradient-to-br from-[#ff9db4] via-[#f43f6b] to-[#be123c] text-white shadow-[0_12px_30px_-10px_rgb(244_63_107/.8),inset_0_1px_0_rgb(255_255_255/.5)] hover:brightness-105',
+  danger: 'bg-[rgb(var(--neg))] text-white hover:brightness-95',
 };
 
 const sizes: Record<ButtonSize, string> = {

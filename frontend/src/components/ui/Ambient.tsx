@@ -9,15 +9,15 @@ export const Ambient = () => (
       }}
     />
     <div
-      className="absolute -left-36 -top-24 h-[560px] w-[560px] animate-float rounded-full opacity-70 blur-[70px]"
+      className="absolute -left-36 -top-24 h-[560px] w-[560px] animate-float rounded-full opacity-55 blur-[80px]"
       style={{ background: 'radial-gradient(circle, var(--blob-1), transparent 70%)' }}
     />
     <div
-      className="absolute -right-28 top-[20%] h-[480px] w-[480px] animate-float rounded-full opacity-45 blur-[70px] [animation-delay:-7s]"
+      className="absolute -right-28 top-[20%] h-[480px] w-[480px] animate-float rounded-full opacity-40 blur-[80px] [animation-delay:-7s]"
       style={{ background: 'radial-gradient(circle, var(--blob-2), transparent 70%)' }}
     />
     <div
-      className="absolute -bottom-72 left-[30%] h-[640px] w-[640px] animate-float rounded-full opacity-60 blur-[70px] [animation-delay:-13s]"
+      className="absolute -bottom-72 left-[30%] h-[640px] w-[640px] animate-float rounded-full opacity-45 blur-[80px] [animation-delay:-13s]"
       style={{ background: 'radial-gradient(circle, var(--blob-3), transparent 70%)' }}
     />
   </div>

@@ -44,13 +44,9 @@ export const Login = () => {
 
       <section className="relative z-10 flex min-h-screen items-center justify-center px-5 py-10">
         <div className="glass w-full max-w-md animate-rise rounded-glass-xl p-7 sm:p-9">
-          <img
-            src={logo}
-            alt="Belaways"
-            className="mb-9 h-11 w-auto object-contain dark:rounded-xl dark:bg-white/90 dark:px-3 dark:py-1.5"
-          />
+          <img src={logo} alt="Belaways" className="mb-9 h-11 w-auto object-contain" />
           <div className="mb-7">
-            <div className="mb-5 grid h-12 w-12 place-items-center rounded-[16px] bg-gradient-to-br from-[#e9d5ff] to-[#a855f7] text-[#3b0764] shadow-[0_10px_24px_-8px_rgb(168_85_247/.7)]">
+            <div className="mb-5 grid h-12 w-12 place-items-center rounded-[16px] bg-accent/12 text-accent">
               <LockKeyhole className="h-5 w-5" aria-hidden="true" />
             </div>
             <span className="eyebrow">Acesso interno</span>
@@ -106,11 +102,8 @@ export const Login = () => {
         <div className="max-w-xl animate-rise [animation-delay:.15s]">
           <span className="eyebrow">Belaways Intelligence</span>
           <h2 className="mt-3 font-display text-[clamp(40px,4.2vw,60px)] font-extrabold leading-[1.02] tracking-[-0.045em]">
-            Operação diária com dados{' '}
-            <span className="bg-gradient-to-br from-[#c084fc] via-[#a855f7] to-[#db2777] bg-clip-text text-transparent">
-              centralizados
-            </span>
-            , alerta cedo e decisão rápida.
+            Operação diária com dados <span className="text-accent">centralizados</span>, alerta
+            cedo e decisão rápida.
           </h2>
           <div className="mt-8 flex flex-wrap gap-2">
             {['Estoque', 'Pedidos', 'Logística', 'Auditoria'].map((item) => (

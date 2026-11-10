@@ -182,7 +182,7 @@ export const Products = () => {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map(({ label, value, icon: Icon }) => (
           <div key={label} className="glass p-5">
-            <div className="grid h-10 w-10 place-items-center rounded-[14px] bg-gradient-to-br from-[#e9d5ff] to-[#a855f7] text-[#3b0764] shadow-[0_10px_24px_-8px_rgb(168_85_247/.7)]">
+            <div className="grid h-10 w-10 place-items-center rounded-[14px] bg-accent/12 text-accent">
               <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
             </div>
             <p className="mt-3 text-sm text-muted">{label}</p>

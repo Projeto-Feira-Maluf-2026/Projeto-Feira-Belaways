@@ -37,7 +37,7 @@ const NavItemLink = ({
           <motion.span
             layoutId={pillId}
             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-            className="absolute inset-0 rounded-[16px] bg-gradient-to-br from-[#d8b4fe] via-[#a855f7] to-[#7e22ce] shadow-[0_10px_26px_-8px_rgb(168_85_247/.8),inset_0_1px_0_rgb(255_255_255/.6)]"
+            className="absolute inset-0 rounded-[16px] bg-pink shadow-[0_8px_20px_-10px_rgb(224_57_159/.8),inset_0_1px_0_rgb(255_255_255/.3)]"
           />
         ) : null}
         <item.icon
@@ -54,11 +54,7 @@ const NavItemLink = ({
 const Sidebar = ({ pillId, onNavigate }: { pillId: string; onNavigate?: () => void }) => (
   <aside className="glass flex h-full flex-col rounded-glass-xl p-3">
     <div className="flex h-16 items-center px-3">
-      <img
-        src={logo}
-        alt="Belaways"
-        className="h-9 w-auto object-contain dark:rounded-xl dark:bg-white/90 dark:px-2.5 dark:py-1"
-      />
+      <img src={logo} alt="Belaways" className="h-9 w-auto object-contain" />
     </div>
     <p className="px-3.5 pb-2 pt-3 text-[11px] font-bold uppercase tracking-[0.1em] text-faint">
       Operação
@@ -174,7 +170,7 @@ export const AppLayout = () => {
                 <p className="truncate text-sm font-bold text-ink">{user?.fullName}</p>
                 <p className="truncate text-xs capitalize text-muted">{user?.role}</p>
               </div>
-              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-[1.5px] border-white/40 bg-gradient-to-br from-[#a855f7] to-[#581c87] text-sm font-bold text-white">
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-[1.5px] border-white/40 bg-pink text-sm font-bold text-white">
                 {initials(user?.fullName)}
               </div>
             </div>

@@ -6,52 +6,56 @@
    Belaways no vidro líquido: lavanda clara de dia, ameixa profunda à noite.
    Valores em "r g b" para aceitar opacidade do Tailwind (ex.: bg-ink/10). */
 :root {
-  --bg: 243 237 251;
-  --bg-2: 228 212 252;
-  --ink: 28 12 46;
-  --muted: 92 74 112;
-  --faint: 140 124 160;
-  --line: rgb(60 30 90 / 0.1);
-  --chip: rgb(60 30 90 / 0.06);
-  --pos: 10 150 90;
-  --neg: 214 48 88;
-  --warn: 184 120 6;
-  --info: 14 140 200;
-  --accent: 147 51 234;
-  --glass-a: rgb(255 255 255 / 0.72);
-  --glass-b: rgb(255 255 255 / 0.4);
+  --bg: 250 245 247;
+  --bg-2: 253 226 240;
+  --ink: 33 16 27;
+  --muted: 104 82 96;
+  --faint: 150 128 142;
+  --line: rgb(70 20 50 / 0.1);
+  --chip: rgb(70 20 50 / 0.05);
+  --pos: 6 135 82;
+  --neg: 206 44 72;
+  --warn: 176 110 0;
+  --info: 12 120 180;
+  --accent: 200 30 134;
+  --pink: #e0399f;
+  --pink-hi: #fe5cc1;
+  --glass-a: rgb(255 255 255 / 0.78);
+  --glass-b: rgb(255 255 255 / 0.5);
   --rim: rgb(255 255 255 / 0.95);
-  --rim-2: rgb(168 85 247 / 0.2);
-  --field: rgb(255 255 255 / 0.6);
-  --shadow: 0 24px 50px -26px rgb(76 29 149 / 0.45);
-  --blob-1: #c084fc;
-  --blob-2: #f9a8d4;
-  --blob-3: #a5b4fc;
+  --rim-2: rgb(254 92 193 / 0.16);
+  --field: rgb(255 255 255 / 0.7);
+  --shadow: 0 24px 50px -28px rgb(90 20 60 / 0.35);
+  --blob-1: #ffc3e3;
+  --blob-2: #ffdccb;
+  --blob-3: #fbd0ea;
   color-scheme: light;
 }
 
 :root.dark {
-  --bg: 11 6 18;
-  --bg-2: 46 16 72;
-  --ink: 248 241 255;
-  --muted: 206 190 226;
-  --faint: 150 132 172;
-  --line: rgb(255 255 255 / 0.09);
-  --chip: rgb(255 255 255 / 0.07);
-  --pos: 125 255 181;
-  --neg: 255 107 140;
-  --warn: 255 198 92;
-  --info: 110 214 255;
-  --accent: 196 140 255;
-  --glass-a: rgb(255 255 255 / 0.12);
-  --glass-b: rgb(255 255 255 / 0.04);
-  --rim: rgb(255 255 255 / 0.4);
-  --rim-2: rgb(196 140 255 / 0.16);
-  --field: rgb(255 255 255 / 0.05);
-  --shadow: 0 24px 60px -24px rgb(0 0 0 / 0.75);
-  --blob-1: #7e22ce;
-  --blob-2: #db2777;
-  --blob-3: #4338ca;
+  --bg: 15 11 14;
+  --bg-2: 48 18 38;
+  --ink: 250 240 246;
+  --muted: 200 180 192;
+  --faint: 140 120 132;
+  --line: rgb(255 255 255 / 0.08);
+  --chip: rgb(255 255 255 / 0.06);
+  --pos: 110 231 170;
+  --neg: 255 120 140;
+  --warn: 252 200 100;
+  --info: 120 205 255;
+  --accent: 255 120 200;
+  --pink: #e0399f;
+  --pink-hi: #fe5cc1;
+  --glass-a: rgb(255 255 255 / 0.08);
+  --glass-b: rgb(255 255 255 / 0.03);
+  --rim: rgb(255 255 255 / 0.22);
+  --rim-2: rgb(254 92 193 / 0.12);
+  --field: rgb(255 255 255 / 0.04);
+  --shadow: 0 24px 60px -24px rgb(0 0 0 / 0.8);
+  --blob-1: #6b1648;
+  --blob-2: #4a1a14;
+  --blob-3: #5a1240;
   color-scheme: dark;
 }
 
@@ -156,13 +160,13 @@
 
   .btn-primary {
     color: #fff;
-    background: linear-gradient(145deg, #c084fc, #9333ea 55%, #6b21a8);
+    background: var(--pink);
     box-shadow:
-      0 12px 30px -10px rgb(168 85 247 / 0.85),
-      inset 0 1px 0 rgb(255 255 255 / 0.6);
+      0 10px 24px -12px rgb(224 57 159 / 0.7),
+      inset 0 1px 0 rgb(255 255 255 / 0.35);
   }
   .btn-primary:hover:not(:disabled) {
-    filter: brightness(1.06) saturate(1.1);
+    background: #c92a8b;
   }
 
   .field {

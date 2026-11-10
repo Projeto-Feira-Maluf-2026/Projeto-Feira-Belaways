@@ -13,11 +13,11 @@ type StatCardProps = {
 };
 
 const tones = {
-  purple: 'from-[#e9d5ff] to-[#a855f7] text-[#3b0764] shadow-[0_10px_24px_-8px_rgb(168_85_247/.7)]',
-  green: 'from-[#bbf7d0] to-[#22c55e] text-[#052e16] shadow-[0_10px_24px_-8px_rgb(34_197_94/.6)]',
-  amber: 'from-[#fde68a] to-[#f59e0b] text-[#451a03] shadow-[0_10px_24px_-8px_rgb(245_158_11/.6)]',
-  red: 'from-[#fecdd3] to-[#f43f5e] text-[#4c0519] shadow-[0_10px_24px_-8px_rgb(244_63_94/.6)]',
-  blue: 'from-[#bae6fd] to-[#38bdf8] text-[#082f49] shadow-[0_10px_24px_-8px_rgb(56_189_248/.6)]',
+  purple: 'bg-accent/12 text-accent',
+  green: 'bg-pos/12 text-pos',
+  amber: 'bg-warn/12 text-warn',
+  red: 'bg-neg/12 text-neg',
+  blue: 'bg-info/12 text-info',
 };
 
 export const StatCard = ({ title, value, icon: Icon, tone = 'purple', helper }: StatCardProps) => (
@@ -30,12 +30,7 @@ export const StatCard = ({ title, value, icon: Icon, tone = 'purple', helper }: 
   >
     <div className="flex items-start justify-between gap-4">
       <p className="text-[13px] font-semibold text-muted">{title}</p>
-      <div
-        className={cn(
-          'grid h-10 w-10 shrink-0 place-items-center rounded-[14px] bg-gradient-to-br',
-          tones[tone],
-        )}
-      >
+      <div className={cn('grid h-10 w-10 shrink-0 place-items-center rounded-[14px]', tones[tone])}>
         <Icon className="h-[18px] w-[18px]" strokeWidth={2.2} aria-hidden="true" />
       </div>
     </div>
