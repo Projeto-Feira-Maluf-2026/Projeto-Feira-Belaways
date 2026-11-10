@@ -13,31 +13,35 @@ type StatCardProps = {
 };
 
 const tones = {
-  purple: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-200',
-  green: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
-  amber: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-  red: 'bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300',
-  blue: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  purple: 'from-[#e9d5ff] to-[#a855f7] text-[#3b0764] shadow-[0_10px_24px_-8px_rgb(168_85_247/.7)]',
+  green: 'from-[#bbf7d0] to-[#22c55e] text-[#052e16] shadow-[0_10px_24px_-8px_rgb(34_197_94/.6)]',
+  amber: 'from-[#fde68a] to-[#f59e0b] text-[#451a03] shadow-[0_10px_24px_-8px_rgb(245_158_11/.6)]',
+  red: 'from-[#fecdd3] to-[#f43f5e] text-[#4c0519] shadow-[0_10px_24px_-8px_rgb(244_63_94/.6)]',
+  blue: 'from-[#bae6fd] to-[#38bdf8] text-[#082f49] shadow-[0_10px_24px_-8px_rgb(56_189_248/.6)]',
 };
 
 export const StatCard = ({ title, value, icon: Icon, tone = 'purple', helper }: StatCardProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 12 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.25 }}
-    className="rounded-lg border border-zinc-200 bg-white p-5 shadow-soft dark:border-zinc-800 dark:bg-zinc-900"
+    initial={{ opacity: 0, y: 14, scale: 0.985 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    whileHover={{ y: -3 }}
+    transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+    className="glass p-4 sm:p-5"
   >
-    <div className="flex items-center justify-between gap-4">
-      <div>
-        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{title}</p>
-        <p className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
-          {typeof value === 'number' ? formatNumber(value) : value}
-        </p>
-      </div>
-      <div className={cn('flex h-11 w-11 items-center justify-center rounded-lg', tones[tone])}>
-        <Icon className="h-5 w-5" aria-hidden="true" />
+    <div className="flex items-start justify-between gap-4">
+      <p className="text-[13px] font-semibold text-muted">{title}</p>
+      <div
+        className={cn(
+          'grid h-10 w-10 shrink-0 place-items-center rounded-[14px] bg-gradient-to-br',
+          tones[tone],
+        )}
+      >
+        <Icon className="h-[18px] w-[18px]" strokeWidth={2.2} aria-hidden="true" />
       </div>
     </div>
-    {helper ? <div className="mt-4 text-xs text-zinc-500 dark:text-zinc-400">{helper}</div> : null}
+    <p className="mt-3 font-display text-[28px] sm:text-[34px] font-extrabold leading-none tracking-[-0.04em] text-ink tabular-nums">
+      {typeof value === 'number' ? formatNumber(value) : value}
+    </p>
+    {helper ? <div className="mt-3 text-xs text-muted">{helper}</div> : null}
   </motion.div>
 );

@@ -17,8 +17,8 @@ export const Alerts = () => {
       header: 'Alerta',
       cell: (alert) => (
         <div className="min-w-72">
-          <p className="font-medium text-zinc-950 dark:text-white">{alert.title}</p>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{alert.description}</p>
+          <p className="font-medium text-ink">{alert.title}</p>
+          <p className="mt-1 text-xs text-muted">{alert.description}</p>
         </div>
       ),
     },
@@ -39,7 +39,16 @@ export const Alerts = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Alertas" description="Prioridades operacionais geradas a partir de produtos, pedidos e integrações." actions={<Button variant="secondary" onClick={() => downloadUrl('/api/alerts?format=csv')}><Download className="h-4 w-4" aria-hidden="true" />CSV</Button>} />
+      <PageHeader
+        title="Alertas"
+        description="Prioridades operacionais geradas a partir de produtos, pedidos e integrações."
+        actions={
+          <Button variant="secondary" onClick={() => downloadUrl('/api/alerts?format=csv')}>
+            <Download className="h-4 w-4" aria-hidden="true" />
+            CSV
+          </Button>
+        }
+      />
       <DataTable rows={isLoading ? [] : data} columns={columns} />
     </div>
   );

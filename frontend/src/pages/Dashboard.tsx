@@ -28,15 +28,20 @@ import { LoadingState } from '@/components/ui/LoadingState';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StatCard } from '@/components/ui/StatCard';
 import { useDashboard, useSyncProducts } from '@/hooks/use-data';
+import { useTheme } from '@/hooks/use-theme';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 export const Dashboard = () => {
   const { data, isLoading, refetch, isFetching } = useDashboard();
   const syncProducts = useSyncProducts();
+  const { theme } = useTheme();
   const isSyncing = isFetching || syncProducts.isPending;
 
   const handleSync = () => {
-    void syncProducts.mutateAsync().then(() => refetch()).catch(() => undefined);
+    void syncProducts
+      .mutateAsync()
+      .then(() => refetch())
+      .catch(() => undefined);
   };
 
   if (isLoading || !data) {
@@ -49,6 +54,26 @@ export const Dashboard = () => {
   }
 
   const metrics = data.metrics;
+  const dark = theme === 'dark';
+  const chart = {
+    accent: dark ? '#c48cff' : '#9333ea',
+    grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(60,30,90,0.09)',
+    axis: dark ? '#968cac' : '#8c7ca0',
+    bar: dark ? ['#f0abfc', '#7e22ce'] : ['#e879f9', '#9333ea'],
+  };
+  const tooltipProps = {
+    cursor: { fill: dark ? 'rgba(255,255,255,0.05)' : 'rgba(147,51,234,0.06)' },
+    contentStyle: {
+      borderRadius: 16,
+      border: 'none',
+      background: dark ? 'rgba(28,14,44,0.92)' : 'rgba(255,255,255,0.92)',
+      backdropFilter: 'blur(16px)',
+      boxShadow: '0 18px 40px -18px rgba(40,10,70,0.55)',
+      color: dark ? '#f8f1ff' : '#1c0c2e',
+      fontWeight: 600,
+    },
+    labelStyle: { color: dark ? '#cebee2' : '#5c4a70' },
+  };
 
   return (
     <div className="space-y-6">
@@ -69,34 +94,96 @@ export const Dashboard = () => {
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard title="Produtos cadastrados" value={metrics.totalProducts} icon={PackageCheck} tone="purple" />
-        <StatCard title="Pedidos hoje" value={metrics.ordersToday} icon={ShoppingBag} tone="green" />
-        <StatCard title="Pedidos na semana" value={metrics.ordersWeek} icon={CalendarDays} tone="blue" />
-        <StatCard title="Pedidos no mês" value={metrics.ordersMonth} icon={ClipboardList} tone="purple" />
-        <StatCard title="Sem estoque" value={metrics.outOfStockProducts} icon={PackageX} tone="red" />
-        <StatCard title="Estoque baixo" value={metrics.lowStockProducts} icon={Boxes} tone="amber" />
-        <StatCard title="Pedidos atrasados" value={metrics.delayedOrders} icon={AlertTriangle} tone="red" />
-        <StatCard title="Inconsistências" value={metrics.inconsistencies} icon={AlertTriangle} tone="amber" />
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <StatCard
+          title="Produtos cadastrados"
+          value={metrics.totalProducts}
+          icon={PackageCheck}
+          tone="purple"
+        />
+        <StatCard
+          title="Pedidos hoje"
+          value={metrics.ordersToday}
+          icon={ShoppingBag}
+          tone="green"
+        />
+        <StatCard
+          title="Pedidos na semana"
+          value={metrics.ordersWeek}
+          icon={CalendarDays}
+          tone="blue"
+        />
+        <StatCard
+          title="Pedidos no mês"
+          value={metrics.ordersMonth}
+          icon={ClipboardList}
+          tone="purple"
+        />
+        <StatCard
+          title="Sem estoque"
+          value={metrics.outOfStockProducts}
+          icon={PackageX}
+          tone="red"
+        />
+        <StatCard
+          title="Estoque baixo"
+          value={metrics.lowStockProducts}
+          icon={Boxes}
+          tone="amber"
+        />
+        <StatCard
+          title="Pedidos atrasados"
+          value={metrics.delayedOrders}
+          icon={AlertTriangle}
+          tone="red"
+        />
+        <StatCard
+          title="Inconsistências"
+          value={metrics.inconsistencies}
+          icon={AlertTriangle}
+          tone="amber"
+        />
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
         <Card>
-          <CardHeader title="Pedidos e receita" description={`Última sincronização: ${formatDate(data.lastSyncAt)}`} />
+          <CardHeader
+            title="Pedidos e receita"
+            description={`Última sincronização: ${formatDate(data.lastSyncAt)}`}
+          />
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data.salesTrend}>
                 <defs>
                   <linearGradient id="ordersGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="5%" stopColor="#8e44ad" stopOpacity={0.28} />
-                    <stop offset="95%" stopColor="#8e44ad" stopOpacity={0} />
+                    <stop offset="5%" stopColor={chart.accent} stopOpacity={0.4} />
+                    <stop offset="95%" stopColor={chart.accent} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
-                <XAxis dataKey="label" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip formatter={(value, name) => (name === 'receita' ? [formatCurrency(Number(value)), 'Receita'] : [value, 'Pedidos'])} />
-                <Area type="monotone" dataKey="receita" stroke="#8e44ad" fill="url(#ordersGradient)" strokeWidth={2} />
+                <CartesianGrid strokeDasharray="3 3" stroke={chart.grid} vertical={false} />
+                <XAxis
+                  dataKey="label"
+                  stroke={chart.axis}
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis stroke={chart.axis} fontSize={12} tickLine={false} axisLine={false} />
+                <Tooltip
+                  {...tooltipProps}
+                  formatter={(value, name) =>
+                    name === 'receita'
+                      ? [formatCurrency(Number(value)), 'Receita']
+                      : [value, 'Pedidos']
+                  }
+                />
+                <Area
+                  type="monotone"
+                  dataKey="receita"
+                  stroke={chart.accent}
+                  fill="url(#ordersGradient)"
+                  strokeWidth={2.5}
+                />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -107,11 +194,28 @@ export const Dashboard = () => {
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.stockByCategory}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
-                <XAxis dataKey="category" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip />
-                <Bar dataKey="estoque" radius={[6, 6, 0, 0]} fill="#10b981" />
+                <CartesianGrid strokeDasharray="3 3" stroke={chart.grid} vertical={false} />
+                <XAxis
+                  dataKey="category"
+                  stroke={chart.axis}
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis stroke={chart.axis} fontSize={12} tickLine={false} axisLine={false} />
+                <Tooltip {...tooltipProps} />
+                <defs>
+                  <linearGradient id="stockGradient" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor={chart.bar[0]} />
+                    <stop offset="100%" stopColor={chart.bar[1]} />
+                  </linearGradient>
+                </defs>
+                <Bar
+                  dataKey="estoque"
+                  radius={[10, 10, 4, 4]}
+                  fill="url(#stockGradient)"
+                  maxBarSize={44}
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -122,9 +226,14 @@ export const Dashboard = () => {
         <CardHeader title="Pedidos por situação" />
         <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {data.ordersByStatus.map((item) => (
-            <div key={item.status} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">{item.status}</p>
-              <p className="mt-2 text-xl font-semibold text-zinc-950 dark:text-white">{item.quantidade}</p>
+            <div
+              key={item.status}
+              className="rounded-[18px] bg-chip p-4 shadow-[inset_0_0_0_1px_var(--line)]"
+            >
+              <p className="text-sm text-muted">{item.status}</p>
+              <p className="mt-2 font-display text-2xl font-extrabold tracking-[-0.03em] text-ink tabular-nums">
+                {item.quantidade}
+              </p>
             </div>
           ))}
         </CardContent>

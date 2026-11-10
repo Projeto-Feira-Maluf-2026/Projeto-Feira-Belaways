@@ -1,39 +1,84 @@
-import { Menu, Search, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { LogOut, Menu, Search, X } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import logo from '@/assets/belaways-logo.png';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Ambient } from '@/components/ui/Ambient';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { navigation, secondaryNavigation } from '@/constants/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  cn(
-    'flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition',
-    isActive
-      ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-200'
-      : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white',
-  );
+type NavItem = (typeof navigation)[number] | (typeof secondaryNavigation)[number];
 
-const Sidebar = ({ onNavigate }: { onNavigate?: () => void }) => (
-  <aside className="flex h-full flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-    <div className="flex h-16 items-center border-b border-zinc-100 px-5 dark:border-zinc-800">
-      <img src={logo} alt="Belaways" className="h-9 w-auto object-contain" />
+const NavItemLink = ({
+  item,
+  pillId,
+  onNavigate,
+}: {
+  item: NavItem;
+  pillId: string;
+  onNavigate?: () => void;
+}) => (
+  <NavLink
+    to={item.href}
+    onClick={onNavigate}
+    className={({ isActive }) =>
+      cn(
+        'group relative flex h-11 items-center gap-3 rounded-[16px] px-3.5 text-sm font-semibold transition-colors duration-300',
+        isActive ? 'text-white' : 'text-muted hover:bg-chip hover:text-ink',
+      )
+    }
+  >
+    {({ isActive }) => (
+      <>
+        {isActive ? (
+          <motion.span
+            layoutId={pillId}
+            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+            className="absolute inset-0 rounded-[16px] bg-gradient-to-br from-[#d8b4fe] via-[#a855f7] to-[#7e22ce] shadow-[0_10px_26px_-8px_rgb(168_85_247/.8),inset_0_1px_0_rgb(255_255_255/.6)]"
+          />
+        ) : null}
+        <item.icon
+          className="relative h-[18px] w-[18px] shrink-0"
+          strokeWidth={2.1}
+          aria-hidden="true"
+        />
+        <span className="relative">{item.label}</span>
+      </>
+    )}
+  </NavLink>
+);
+
+const Sidebar = ({ pillId, onNavigate }: { pillId: string; onNavigate?: () => void }) => (
+  <aside className="glass flex h-full flex-col rounded-glass-xl p-3">
+    <div className="flex h-16 items-center px-3">
+      <img
+        src={logo}
+        alt="Belaways"
+        className="h-9 w-auto object-contain dark:rounded-xl dark:bg-white/90 dark:px-2.5 dark:py-1"
+      />
     </div>
-    <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+    <p className="px-3.5 pb-2 pt-3 text-[11px] font-bold uppercase tracking-[0.1em] text-faint">
+      Operação
+    </p>
+    <nav aria-label="Principal" className="flex-1 space-y-1 overflow-y-auto">
       {navigation.map((item) => (
-        <NavLink key={item.href} to={item.href} className={navLinkClass} onClick={onNavigate}>
-          <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-          <span>{item.label}</span>
-        </NavLink>
+        <NavItemLink key={item.href} item={item} pillId={pillId} onNavigate={onNavigate} />
       ))}
     </nav>
-    <div className="border-t border-zinc-100 p-3 dark:border-zinc-800">
+    <div className="mt-3 space-y-1 border-t border-line pt-3">
+      <p className="px-3.5 pb-1 text-[11px] font-bold uppercase tracking-[0.1em] text-faint">
+        Atalhos
+      </p>
       {secondaryNavigation.map((item) => (
-        <NavLink key={item.label} to={item.href} className={navLinkClass} onClick={onNavigate}>
+        <NavLink
+          key={item.label}
+          to={item.href}
+          onClick={onNavigate}
+          className="flex h-10 items-center gap-3 rounded-[14px] px-3.5 text-[13px] font-semibold text-muted transition hover:bg-chip hover:text-ink"
+        >
           <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
           <span>{item.label}</span>
         </NavLink>
@@ -42,11 +87,20 @@ const Sidebar = ({ onNavigate }: { onNavigate?: () => void }) => (
   </aside>
 );
 
+const initials = (name?: string | null) =>
+  (name ?? '')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('') || 'BW';
+
 export const AppLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [search, setSearch] = useState('');
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,54 +108,95 @@ export const AppLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100">
-      <div className="fixed inset-y-0 left-0 z-30 hidden w-72 lg:block">
-        <Sidebar />
+    <div className="relative min-h-screen text-ink">
+      <Ambient />
+
+      <div className="fixed inset-y-4 left-4 z-30 hidden w-[264px] lg:block">
+        <Sidebar pillId="nav-pill" />
       </div>
 
-      {mobileOpen ? (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            className="absolute inset-0 bg-zinc-950/40"
-            aria-label="Fechar navegação"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="relative h-full w-72 shadow-2xl">
-            <Sidebar onNavigate={() => setMobileOpen(false)} />
+      <AnimatePresence>
+        {mobileOpen ? (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+              aria-label="Fechar navegação"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.div
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              transition={{ type: 'spring', stiffness: 360, damping: 34 }}
+              className="absolute inset-y-3 left-3 w-[270px]"
+            >
+              <Sidebar pillId="nav-pill-mobile" onNavigate={() => setMobileOpen(false)} />
+              <button
+                type="button"
+                className="glass absolute -right-14 top-2 grid h-11 w-11 place-items-center rounded-full"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Fechar"
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </motion.div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </AnimatePresence>
 
-      <div className="lg:pl-72">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-zinc-200 bg-white/90 px-4 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/85 sm:px-6">
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)} aria-label="Abrir navegação">
-            <Menu className="h-5 w-5" aria-hidden="true" />
-          </Button>
-          <form onSubmit={submitSearch} className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
-            <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Pesquisar produto, SKU ou pedido" className="pl-9" />
-          </form>
-          <ThemeToggle />
-          <div className="hidden min-w-0 items-center gap-3 sm:flex">
-            <div className="min-w-0 text-right">
-              <p className="truncate text-sm font-medium text-zinc-950 dark:text-white">{user?.fullName}</p>
-              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">{user?.role}</p>
+      <div className="relative z-10 lg:pl-[296px]">
+        <header className="sticky top-0 z-20 px-3 pt-3 sm:px-6 sm:pt-4 lg:pl-0 lg:pr-8">
+          <div className="glass flex h-16 items-center gap-2 rounded-full px-2.5 sm:gap-3">
+            <button
+              type="button"
+              className="grid h-11 w-11 place-items-center rounded-full text-muted transition hover:bg-chip hover:text-ink lg:hidden"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Abrir navegação"
+            >
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <form onSubmit={submitSearch} className="relative flex-1">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Pesquisar produto, SKU ou pedido"
+                aria-label="Pesquisar"
+                className="h-11 w-full rounded-full border-0 bg-chip pl-10 pr-4 text-sm text-ink outline-none transition placeholder:text-faint focus:bg-[var(--field)] focus:ring-4 focus:ring-accent/15"
+              />
+            </form>
+            <ThemeToggle />
+            <div className="hidden min-w-0 items-center gap-3 sm:flex">
+              <div className="min-w-0 text-right">
+                <p className="truncate text-sm font-bold text-ink">{user?.fullName}</p>
+                <p className="truncate text-xs capitalize text-muted">{user?.role}</p>
+              </div>
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-[1.5px] border-white/40 bg-gradient-to-br from-[#a855f7] to-[#581c87] text-sm font-bold text-white">
+                {initials(user?.fullName)}
+              </div>
             </div>
-            <Button variant="secondary" size="sm" onClick={() => void signOut()}>
-              Sair
-            </Button>
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="grid h-11 w-11 place-items-center rounded-full text-muted transition hover:bg-neg/10 hover:text-neg"
+              aria-label="Sair"
+              title="Sair"
+            >
+              <LogOut className="h-[18px] w-[18px]" aria-hidden="true" />
+            </button>
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8">
+        <main
+          key={location.pathname}
+          className="mx-auto w-full max-w-[1500px] px-3 py-6 sm:px-6 lg:pl-0 lg:pr-8"
+        >
           <Outlet />
         </main>
       </div>
-      {mobileOpen ? (
-        <Button variant="secondary" size="icon" className="fixed right-4 top-4 z-50 lg:hidden" onClick={() => setMobileOpen(false)} aria-label="Fechar">
-          <X className="h-5 w-5" aria-hidden="true" />
-        </Button>
-      ) : null}
     </div>
   );
 };
